@@ -24,7 +24,7 @@ def compute_accuracy(pred, target):
 
 class TargetTransform(object):
     def __init__(self):
-        self.classes_list = np.load("/home/ubuntu/dnn_models_customized/pytorch_yolov3/classes_list_103_classes.npy")
+        self.classes_list = np.load("/home/collage_inference/master_service/classes_list_103_classes.npy")
         self.classes_list = np.sort(self.classes_list)
     def __call__(self, target):
         return self.classes_list[target]
@@ -88,7 +88,7 @@ w = 3
 collage_spatial = 416
 single_spatial = 224
 single_spatial_full = 256
-val_root = "/home/ubuntu/imagenet-data/raw-data/validation_100/"
+val_root = "/home/imagenet-data/raw-data/validation_100/"
 #Crop boundaries. Square shaped.
 left_crop = (single_spatial_full - single_spatial)/2
 top_crop = (single_spatial_full - single_spatial)/2
