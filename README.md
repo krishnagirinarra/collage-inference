@@ -1,5 +1,5 @@
 ## Installation pre-requisites
-python3, pip3, torch, torchvision, flask, scikit-image, pandas, grequests  
+python3, pip3, torch, torchvision, flask, scikit-image, pandas, grequests, opencv-python 
 
 ### Folder organization
 master_service contains the codes for master service in the collage inference.  
