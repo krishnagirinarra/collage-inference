@@ -4,18 +4,18 @@ import shutil
 """
 Task for data input node
 """
-def task(filelist, pathin, pathout):
+def task(file_, pathin, pathout):
     out_list = []
-    for f in filelist:
-        source = os.path.join(pathin, f) 
-        destination = os.path.join(pathout, f)
-        try: 
-            out_list.append(shutil.copyfile(source, destination))
-        except: 
-            print("ERROR while copying file in data_source_task.py")
+    source = os.path.join(pathin, file_) 
+    destination = os.path.join(pathout, file_)
+    try: 
+        out_list.append(shutil.copyfile(source, destination))
+    except: 
+        print("ERROR while copying file in data_source_task.py")
     return out_list 
 	
 if __name__ == "__main__":
     filelist = ['n03345487_1002.JPEG']
-    class_name = "fireengine" 
-    task(filelist, "./datasources/" + class_name + "/", "./to_master/")
+    class_name = "fireengine"
+    for f in filelist:
+        task(f, "./datasources/" + class_name + "/", "./to_master/")

@@ -15,7 +15,7 @@ import shutil
 #    def __call__(self, target):
 #        return self.classes_list[target]
 
-def task(filelist, pathin, pathout): 
+def task(file_, pathin, pathout): 
     ### set device to CPU
     device = torch.device("cpu")
     ### Load model
@@ -35,7 +35,7 @@ def task(filelist, pathin, pathout):
 #    input_loader = DataLoader(input_data, batch_size=1, shuffle=False)
 #    for bi, (input_batch, target) in enumerate(val_loader):
     out_list = []
-    for f in filelist:
+    for f in [file_]:
         ### Read input files.
         img = Image.open(os.path.join(pathin, f))
         ### Apply transforms.
@@ -68,4 +68,5 @@ if __name__ == "__main__":
     filelist = ['n03345487_1002.JPEG', 'n04146614_10015.JPEG']
     pathin = './to_resnet/'
     pathout = './classified_images/'
-    task(filelist, pathin, pathout)    
+    for f in filelist:
+        task(f, pathin, pathout)    
