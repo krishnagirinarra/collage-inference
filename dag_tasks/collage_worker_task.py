@@ -7,6 +7,7 @@ from PIL import Image
 from darknet_models import Darknet
 from utils.utils import *
 from utils import torch_utils
+import pickle
 
 def calculate_iou(L1, R1, T1, B1, L2, R2, T2, B2):
     L = max(L1, L2)
@@ -108,11 +109,15 @@ def task(file_, pathin, pathout):
         collage_tensor.unsqueeze_(0) 
         ### Classify the image
         pred = model(collage_tensor)
-        ### Process predictions	
-        final_preds = process_collage(pred, nms_thres, conf_thres, classes_list, w, single_spatial) # List of predictions_arr
-        print(final_preds)
-
+        ### Process predictions	to get a list of final predictions
+        final_preds = process_collage(pred, nms_thres, conf_thres, classes_list, w, single_spatial)
+    ### Write predictions to a file and send it to decoder task's folder
+    out_list = []
+    with open(os.path.join(pathout,"collage_preds.pickle"), "wb") as outfile:
+        pickle.dump(final_preds, outfile)
+    out_list.append(outfile)
+    return out_list
 if __name__=="__main__":
     filelist = ["new_collage.JPEG"]
     for f in filelist:
-        task(f, "./to_collage/", "")
+        task(f, "./to_collage/", "./")
