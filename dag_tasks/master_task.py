@@ -2,6 +2,7 @@
 import os
 import shutil
 from PIL import Image
+# import numpy as np
 """
 Task for master encoder node.
 1) Takes as input multiple image files and creates a collage image file. It is ideal to have 9 different inputs to create one collage image. 
@@ -57,6 +58,7 @@ def task(filelist, pathin, pathout):
         ### Number of files in file list can be less than the number of images needed (9)
         file_idx = int(i % len(filelist))
         input_list.append(os.path.join(pathin, filelist[file_idx]))
+    #collage_file = create_collage(input_list, collage_spatial, single_spatial, single_spatial_full, w).astype(np.float16)
     collage_file = create_collage(input_list, collage_spatial, single_spatial, single_spatial_full, w)
     helper_copyfile(collage_file, "", pathout[0], out_list) 
     ### send to resnet tasks

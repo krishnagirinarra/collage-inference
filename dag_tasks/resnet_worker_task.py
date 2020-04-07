@@ -8,13 +8,6 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision import datasets
 import shutil
 
-#class TargetTransform(object):
-#    def __init__(self):
-#        self.classes_list = np.load("./classes_list_103_classes.npy")
-#        self.classes_list = np.sort(self.classes_list)
-#    def __call__(self, target):
-#        return self.classes_list[target]
-
 def task(file_, pathin, pathout): 
     ### set device to CPU
     device = torch.device("cpu")
@@ -26,14 +19,7 @@ def task(file_, pathin, pathout):
     composed = transforms.Compose([
                transforms.Resize(256, Image.ANTIALIAS),
                transforms.CenterCrop(224),
-#               transforms.ToTensorCollage()])
                transforms.ToTensor()])
-#               normalize])
-#    reverse_map = TargetTransform()
-#    input_data = datasets.ImageFolder(root=pathin, transform=composed, target_transform = reverse_map)
-#    input_data = datasets.ImageFolder(root=pathin, transform=composed)
-#    input_loader = DataLoader(input_data, batch_size=1, shuffle=False)
-#    for bi, (input_batch, target) in enumerate(val_loader):
     out_list = []
     for f in [file_]:
         ### Read input files.

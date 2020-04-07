@@ -1,11 +1,12 @@
 import torch
 import torchvision.transforms as transforms
 import numpy as np
-import os.path
+import os
 import math
-
-from torchvision import datasets
-from torch.utils.data import Dataset, DataLoader
+from PIL import Image
+from darknet_models import Darknet
+from utils.utils import *
+from utils import torch_utils
 
 def calculate_iou(L1, R1, T1, B1, L2, R2, T2, B2):
     L = max(L1, L2)
@@ -17,7 +18,6 @@ def calculate_iou(L1, R1, T1, B1, L2, R2, T2, B2):
     A2 = (R2-L2+1) * (B2-T2+1)
     iou = i*1.0/(A1 + A2 - i) 
     return iou
-	
 	
 def calculate_pos(left, right, top, bottom, w, spatial):
     # return box in pos with maximum iou.
@@ -41,7 +41,7 @@ def calculate_pos(left, right, top, bottom, w, spatial):
     #print(left, right, top, bottom, x, y)
     return (pos_dict[x])[y]
 	
-def process_collage(pred):
+def process_collage(pred, nms_thres, conf_thres, classes_list, w, single_spatial):
     #print("pred1: ", pred.shape)
     pred = pred[pred[:, :, 4] > conf_thres]
     #print("pred2: ", pred.shape)
@@ -79,34 +79,40 @@ def process_collage(pred):
     predictions_list = classes_list[predictions_list].tolist()
     return predictions_list
 	
-	
-def task(filelist, pathin, pathout):
-	device = torch.device("cpu")
-	
-	# Load collage model
-	# model = .....
-	# model.to(device)
-	
-	input_data = datasets.ImageFolder(root=pathin+filelist[0]) # Not sure what the transform to be applied to the collage image is
-	input_loader = DataLoader(input_data, batch_size=1, shuffle=False)
-	
-	with torch.no_grad():
-		for i, (image, label) in enumerate(input_loader):
-			out = model(image)
-		
-		final_preds = process_collage(out) # List of predictions_arr
-		
-	
-	outfiles = []
-	for pred in final_preds:
-		path = path + '/pred_' +  str(pred)
-		outfiles.append(path)
-	
-	return outfiles
-		
-	
-	
-	
-	
-	
-	
+def task(file_, pathin, pathout):
+    img_size=416
+    w = 3
+    single_spatial = math.ceil(img_size*1.0/w)
+    nms_thres = 0.45
+    conf_thres = 0.3
+    # Load collage model
+    device = torch.device("cpu")
+    net_config_path = "../collage_worker/cfg/yolov3-tiny.cfg"
+    model = Darknet(net_config_path, img_size)
+    weights_file_path = "../collage_worker/weights/best.pt"
+    checkpoint = torch.load(weights_file_path, map_location="cpu")
+    model.load_state_dict(checkpoint['model'])
+    del checkpoint
+    model.to(device).eval()
+    classes_list = np.load("./classes_list_103_classes.npy")
+    classes_list = np.sort(classes_list)
+    ### Load collage image
+    composed = transforms.Compose([
+               transforms.ToTensor()])
+    for f in [file_]:
+        ### Read input files.
+        collage_img = Image.open(os.path.join(pathin, f))
+        ### Transform to tensor format.
+        collage_tensor = composed(collage_img)
+        ### 3D -> 4D (batch dimension = 1)
+        collage_tensor.unsqueeze_(0) 
+        ### Classify the image
+        pred = model(collage_tensor)
+        ### Process predictions	
+        final_preds = process_collage(pred, nms_thres, conf_thres, classes_list, w, single_spatial) # List of predictions_arr
+        print(final_preds)
+
+if __name__=="__main__":
+    filelist = ["new_collage.JPEG"]
+    for f in filelist:
+        task(f, "./to_collage/", "")
