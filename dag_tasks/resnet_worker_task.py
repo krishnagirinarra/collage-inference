@@ -67,5 +67,5 @@ def task(filelist, pathin, pathout):
 if __name__ == "__main__":
     filelist = ['n03345487_1002.JPEG', 'n04146614_10015.JPEG']
     pathin = './to_resnet/'
-    pathout = './classes/'
+    pathout = './classified_images/'
     task(filelist, pathin, pathout)    

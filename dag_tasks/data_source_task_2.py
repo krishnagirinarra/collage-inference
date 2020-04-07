@@ -16,5 +16,6 @@ def task(filelist, pathin, pathout):
     return out_list 
 	
 if __name__ == "__main__":
-	filelist = ['n04146614_10015.JPEG']
-	task(filelist, "./datasets/schoolbus/", "./to_master/")
+    filelist = ['n04146614_10015.JPEG']
+    class_name = "schoolbus"
+    task(filelist, "./datasources/" + class_name + "/", "./to_master/")

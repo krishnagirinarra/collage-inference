@@ -16,5 +16,6 @@ def task(filelist, pathin, pathout):
     return out_list 
 	
 if __name__ == "__main__":
-	filelist = ['n03345487_1002.JPEG']
-	task(filelist, "./datasets/fireengine/", "./to_master/")
+    filelist = ['n03345487_1002.JPEG']
+    class_name = "fireengine" 
+    task(filelist, "./datasources/" + class_name + "/", "./to_master/")
