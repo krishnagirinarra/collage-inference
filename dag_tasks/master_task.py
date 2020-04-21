@@ -29,14 +29,16 @@ def create_collage(input_list, collage_spatial, single_spatial, single_spatial_f
     #collage = np.transpose(collage,(2,0,1))
     #collage /= 255.0
     ### write to file 
-    collage_name = "./new_collage.JPEG"
+    collage_name = "./outmasterprefix_new_collage.JPEG"
     collage_resized = collage.resize((collage_spatial, collage_spatial), Image.ANTIALIAS)
     collage_resized.save(collage_name)
     return collage_name
 
 def helper_copyfile(f, pathin, pathout, out_list):
     source = os.path.join(pathin, f)
-    destination = os.path.join(pathout, f)
+    print("file is", f)
+    f_split = f.split("prefix_")[1]
+    destination = os.path.join(pathout, "outmasterprefix_" + f_split)
     #try: 
     out_list.append(shutil.copyfile(source, destination))
     #except: 
@@ -67,6 +69,6 @@ def task(filelist, pathin, pathout):
     return out_list 
 	
 if __name__ == "__main__":
-    filelist = ['n03345487_1002.JPEG', 'n04146614_10015.JPEG']
+    filelist = ['outds1prefix_n03345487_1002.JPEG', 'outds2prefix_n04146614_10015.JPEG']
     pathout = ["./to_collage/", "./to_resnet/"]
     task(filelist, "./to_master/", pathout)

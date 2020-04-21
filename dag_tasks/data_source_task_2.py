@@ -7,7 +7,7 @@ Task for data input node
 def task(file_, pathin, pathout):
     out_list = []
     source = os.path.join(pathin, file_) 
-    destination = os.path.join(pathout, file_)
+    destination = os.path.join(pathout, "outds2prefix_" + file_)
     try: 
         out_list.append(shutil.copyfile(source, destination))
     except: 
