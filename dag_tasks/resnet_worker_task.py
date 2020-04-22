@@ -39,23 +39,24 @@ def task(file_, pathin, pathout):
         if pred[0] == 555: ### fire engine. class 1
             source = os.path.join(pathin, f)
             f_split = f.split("prefix_")[1]
-            destination = os.path.join(pathout, '1', "outresnetprefix_" + f_split)
+            destination = os.path.join(pathout, "class1_prefix_" + f_split)
             out_list.append(shutil.copyfile(source, destination))
         elif pred[0] == 779: ### school bus. class 2
             source = os.path.join(pathin, f)
             f_split = f.split("prefix_")[1]
-            destination = os.path.join(pathout, '2', "outresnetprefix_" + f_split)
+            destination = os.path.join(pathout, "class2_prefix_" + f_split)
             out_list.append(shutil.copyfile(source, destination))
         else: ### not either of the classes
             source = os.path.join(pathin, f)
             f_split = f.split("prefix_")[1]
-            destination = os.path.join(pathout, 'none', "outresnetprefix_" + f_split)
+            destination = os.path.join(pathout, "classNA_prefix_" + f_split)
             out_list.append(shutil.copyfile(source, destination))
     return out_list
 
 if __name__ == "__main__":
-    filelist = ['outmasterprefix_n03345487_1002.JPEG', 'outmasterprefix_n04146614_10015.JPEG']
+    #filelist = ['outmasterprefix_n03345487_1002.JPEG', 'outmasterprefix_n04146614_10015.JPEG']
+    file_ = 'outmasterprefix_n03345487_1002.JPEG'
     pathin = './to_resnet/'
     pathout = './classified_images/'
-    for f in filelist:
-        task(f, pathin, pathout)    
+    #for f in filelist:
+    task(file_, pathin, pathout)    
