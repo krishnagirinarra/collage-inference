@@ -8,7 +8,10 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision import datasets
 import shutil
 
+resnet_task_num = 0
+
 def task(file_, pathin, pathout): 
+    global resnet_task_num
     ### set device to CPU
     device = torch.device("cpu")
     ### Load model
@@ -39,12 +42,12 @@ def task(file_, pathin, pathout):
         if pred[0] == 555: ### fire engine. class 1
             source = os.path.join(pathin, f)
             f_split = f.split("prefix_")[1]
-            destination = os.path.join(pathout, "class1_prefix_" + f_split)
+            destination = os.path.join(pathout, "resnet" + str(resnet_task_num) + "_class1_prefix_" + f_split)
             out_list.append(shutil.copyfile(source, destination))
         elif pred[0] == 779: ### school bus. class 2
             source = os.path.join(pathin, f)
             f_split = f.split("prefix_")[1]
-            destination = os.path.join(pathout, "class2_prefix_" + f_split)
+            destination = os.path.join(pathout, "resnet" + str(resnet_task_num) + "_class2_prefix_" + f_split)
             out_list.append(shutil.copyfile(source, destination))
         else: ### not either of the classes
             source = os.path.join(pathin, f)
