@@ -42,7 +42,7 @@ def task(filelist, pathin, pathout):
             time.sleep(0.5)
     # Find the missing resnet tasks
     assert(num_remaining_resnet_tasks >= 0)
-    missing_resnet_tasks_set = set(range(0, max_num_remaining_resnet_tasks + 1))
+    missing_resnet_tasks_set = set(range(0, max_num_remaining_resnet_tasks))
     missing_resnet_tasks = []
     missing_resnet_tasks_str = ""
     class_predictions = []
