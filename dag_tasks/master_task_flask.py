@@ -49,7 +49,7 @@ def recv_missing_from_decoder_task():
         for task,cls in zip(missing_resnet_tasks, class_predictions):
             source_path = tasks_to_images_dict[task]
             destination_node_port = store_class_tasks_node_port_dict[cls]
-            destination_path = store_class_tasks_paths_dict[cls]
+            destination_path = store_class_tasks_paths_dict[cls] # NOTETOKRISHNA: Need to match filename format.
             #if pred[0] == 555: ### fire engine. class 1
             #    f_split = f.split("prefix_")[1]
             #    destination = os.path.join(pathout, "class1_prefix_" + f_split)
@@ -106,6 +106,7 @@ def helper_copyfile(f, pathin, pathout, out_list):
 
 def helper_update_tasks_to_images_dict(task_num, f, pathin):
     ### Reusing the input files to the master node. NOT creating a local copy of input files.
+    global tasks_to_images_dict
     source = os.path.join(pathin, f)
     tasks_to_images_dict[task_num] = source 
     return
